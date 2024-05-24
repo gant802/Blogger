@@ -4,7 +4,7 @@ class Post():
     all = {}
     categories = ['sports', 'news', 'pop', 'nature']
 
-    def __init__(self, title, content, category, author_id=None, id = None):
+    def __init__(self, title, content, category, author_id, id = None):
         self.id = id
         self.title = title
         self.content = content
@@ -24,4 +24,25 @@ class Post():
         if isinstance(new_title, str) and 0 < len(new_title) <= 20:
             self._title = new_title
 
-    
+    @classmethod
+    def create_table(cls):
+        """ Create a new table to persist the attributes of Post instances """
+        sql = """
+            CREATE TABLE IF NOT EXISTS posts (
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            content TEXT,
+            category TEXT,
+            author_id INTEGER,
+            FOREIGN KEY (author_id) REFERENCES authors(id))
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        """ Drop the table to persist the attributes of Post instances """
+        sql = "DROP TABLE IF EXISTS posts"
+
+        CURSOR.execute(sql)
+        CONN.commit()

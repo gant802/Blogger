@@ -6,7 +6,8 @@ from models.__init__ import CONN, CURSOR
 from models.author import Author
 from models.post import Post
 
-
-p1 = Post("1", "Hello")
+Post.drop_table()
+Post.create_table()
+p1 = Post("Big whale", "Hello", "Whales", "Grant")
 
 ipdb.set_trace()
