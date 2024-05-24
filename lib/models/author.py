@@ -8,3 +8,4 @@ class Author:
 
     def __repr__(self):
         return f'<Author name={self.name}'
+    

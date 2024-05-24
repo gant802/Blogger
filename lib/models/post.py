@@ -24,6 +24,28 @@ class Post():
         if isinstance(new_title, str) and 0 < len(new_title) <= 20:
             self._title = new_title
 
+    @property 
+    def content(self):
+        return self._content
+    
+    #only accepts type str and at least 1 charachter
+    @content.setter
+    def content(self, new_content):
+        if isinstance(new_content, str) and len(new_content) > 0:
+            self._content = new_content
+
+    @property
+    def category(self):
+        return self._category
+    
+    #only accepts if category is in categories
+    @category.setter
+    def category(self, new_category):
+        if new_category in Post.categories:
+            self._category = new_category
+
+    
+
     @classmethod
     def create_table(cls):
         """ Create a new table to persist the attributes of Post instances """
