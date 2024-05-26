@@ -8,6 +8,8 @@ from models.post import Post
 
 Post.drop_table()
 Post.create_table()
-p1 = Post("Big whale", "a", "sports", "Whales", "Grant")
+p1 = Post("Big whale", "Big whales are very big", "nature", "Grant")
+p2 = Post("Small whale", "Small whales are very small", "nature", "Grant")
+p3 = Post("Panthers", "Panthers are trash", "sports", "Dan")
 
 ipdb.set_trace()

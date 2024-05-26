@@ -2,7 +2,9 @@ from models.__init__ import CURSOR, CONN
 
 class Post():
     all = {}
-    categories = ['sports', 'news', 'pop', 'nature']
+    categories = ['sports', 'news', 'pop', 'nature', 'weather', 'cars', 'movies']
+
+    #! Need to create a validation for author id to be an instance of an author using Author.find_by_id()
 
     def __init__(self, title, content, category, author_id, id = None):
         self.id = id
@@ -70,6 +72,7 @@ class Post():
         CURSOR.execute(sql)
         CONN.commit()
 
+    #? Save the  post to the database
     def save(self):
         """ Insert a new row with the title, content, category and author_id values of the current Post object.
         Update object id attribute using the primary key value of new row.
@@ -85,6 +88,7 @@ class Post():
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
+    #? Updates the post in the database based on the instance's attributes
     def update(self):
         """Update the table row corresponding to the current Post instance."""
         sql = """
@@ -95,3 +99,89 @@ class Post():
         CURSOR.execute(sql, (self.title, self.content,
                              self.category, self.author_id, self.id))
         CONN.commit()
+
+    #? Deletes the post from the database and updates the local dictionary
+    def delete(self):
+        """Delete the table row corresponding to the current Post instance,
+        delete the dictionary entry, and reassign id attribute"""
+        sql = """
+            DELETE FROM posts
+            WHERE id = ?
+        """
+    
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+    
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        #Set the id to none 
+        self.id = None
+
+    #? Creates a new post instance to be put in database and dictionary
+    @classmethod
+    def create(cls, title, content, category, author_id):
+        """Create a new Post instance and save it to the database."""
+        post = cls(title, content, category, author_id)
+        post.save()
+        return post
+    
+    #? Checks if there is an instance of the post in the database
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Post object having the attribute values from the table row."""
+
+        # Check the dictionary for  existing instance using the row's primary key
+        post = cls.all.get(row[0])
+        if post:
+            # ensure attributes match row values in case local instance was modified
+            post.name = row[1]
+            post.job_title = row[2]
+            post.department_id = row[3]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            post = cls(row[1], row[2], row[3])
+            post.id = row[0]
+            cls.all[post.id] = post
+        return post
+    
+    #? Retrieves all posts from the database
+    @classmethod
+    def get_all(cls):
+        """Return a list containing one Post object per table row"""
+        sql = """
+            SELECT *
+            FROM posts
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+    
+    #? Find the post instance by id from the database using the instance-from-db method
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Post object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM posts
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    #? Find the post instance by title from the database using the instance-from-db method
+    @classmethod
+    def find_by_title(cls, title):
+        """Return Post object corresponding to first table row matching specified title"""
+        sql = """
+            SELECT *
+            FROM posts
+            WHERE title is ?
+        """
+
+        row = CURSOR.execute(sql, (title,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+
