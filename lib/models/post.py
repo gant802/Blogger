@@ -138,9 +138,10 @@ class Post():
             post.name = row[1]
             post.job_title = row[2]
             post.department_id = row[3]
+            post.author_id = row[4]
         else:
             # not in dictionary, create new instance and add to dictionary
-            post = cls(row[1], row[2], row[3])
+            post = cls(row[1], row[2], row[3], row[4])
             post.id = row[0]
             cls.all[post.id] = post
         return post
