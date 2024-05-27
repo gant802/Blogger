@@ -3,7 +3,13 @@
 from helpers import (
     exit_program,
     add_author,
-    write_post
+    write_post,
+    view_authors,
+    find_author_by_id,
+    find_author_by_name,
+    view_authors_posts,
+    view_all_posts,
+    view_posts_by_category
 )
 
 
@@ -15,14 +21,18 @@ def main():
             exit_program()
         elif choice == "1":
             create_menu()
+        elif choice == "2":
+            view_menu()
         else:
             print("Invalid choice")
 
 
 def menu():
+    print("Welcome to BLOGGER!")
     print("Please select an option:")
     print("0. Exit the program")
-    print("1. Some useful function")
+    print("1. Create Author or Post")
+    print("2. View Authors and Posts")
 
 def create_menu():
     while True:
@@ -30,20 +40,56 @@ def create_menu():
         choice = input("> ")
         if choice == "1":
             add_author()
-            main()
+            create_menu()
         elif choice == "2":
             write_post()
-            main()
+            create_menu()
         elif choice == "3":
             main()
-        
+        else:
+            print("Invalid choice")
 
 def create_menu_options():
     print("Please select an option:")
     print("1. Add an author")
     print("2. Write a post")
-    print("3. Return to Menu")
+    print("3. Return to Main Menu")
 
+def view_menu():
+    while True:
+        view_menu_options()
+        choice = input("> ")
+        if choice == "0":
+            exit_program()
+        elif choice == "1":
+            view_authors()
+        elif choice == "2":
+            find_author_by_id()
+        elif choice == "3":
+            find_author_by_name()
+        elif choice == "4":
+            view_authors_posts()
+        elif choice == "5":
+            view_all_posts()
+        elif choice == "6":
+            view_posts_by_category()
+        elif choice == "7":
+            main()
+        else:
+            print("Invalid choice")
+        view_menu()
+
+def view_menu_options():
+    print("Please select an option:")
+    print("0. Exit Program")
+    print("1. View all authors")
+    print("2. Find author by id")
+    print("3. Find author by name")
+    print("4. View all post by specific author")
+    print("5. View all posts")
+    print("6. View all posts by category")
+    print("7. Return to main menu")
+    
 
 
 

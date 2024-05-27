@@ -185,4 +185,8 @@ class Post():
         row = CURSOR.execute(sql, (title,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
-
+    @classmethod
+    def find_by_category(cls, category):
+        """Return list of Post objects corresponding to table rows matching specified category"""
+        return [post for post in cls.get_all() if post.category == category]
+       
