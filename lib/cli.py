@@ -11,7 +11,8 @@ from helpers import (
     find_author_by_name,
     view_authors_posts,
     view_all_posts,
-    view_posts_by_category
+    view_posts_by_category,
+    find_number_of_posts_by_author
 )
 
 
@@ -82,6 +83,8 @@ def view_menu():
         elif choice == "6":
             view_posts_by_category()
         elif choice == "7":
+            find_number_of_posts_by_author()
+        elif choice == "8":
             main()
         else:
             print("Invalid choice")
@@ -96,7 +99,8 @@ def view_menu_options():
     print("4. View all post by specific author")
     print("5. View all posts")
     print("6. View all posts by category")
-    print("7. Return to main menu")
+    print("7. Find number of posts by author")
+    print("8. Return to main menu")
     
 def edit_menu():
     while True:

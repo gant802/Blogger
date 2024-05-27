@@ -42,18 +42,37 @@ def write_post():
 
 def view_authors():
     authors = Author.get_all()
-    for author in authors:
-        print(f"{author.name} id:{author.id}")
+    if authors:
+        for author in authors:
+            print(f"{author.name} id:{author.id}")
+    else :
+        print("No authors found")
+
+def find_number_of_posts_by_author():
+    authors = [f"{author.id}: {author.name}" for author in Author.get_all()]
+    id_ = input(f"Input author's id to see number of posts. {authors}: ")
+    try:
+        author = Author.find_by_id(id_)
+        authors_posts = author.find_all_posts()
+        print(f"Author {author.name} has {len(authors_posts)} posts.")
+    except Exception as exc:
+        print(f"Author not found. {exc}")
+        find_number_of_posts_by_author()
+            
 
 def find_author_by_id():
     id_ = input("Enter the author's id: ")
     author = Author.find_by_id(id_)
-    print(f"--Author: {author.name}--") if author else print(f'Author {id_} not found')
+    if author:
+        print(f"\nAuthor found: --{author.name}--\n") if author else print(f'Author {id_} not found')
+    else: 
+        print(f"\nAuthor {id_} not found\n")
+        find_author_by_id()
 
 def find_author_by_name():
     name = input("Enter the author's name: ")
     author = Author.find_by_name(name)
-    print(f"--Author: {author.name}--") if author else print(
+    print(f"Author found: --{author.name}--") if author else print(
         f'Author {name} not found')
 
 def view_authors_posts():
@@ -63,7 +82,7 @@ def view_authors_posts():
         try:
             posts = author_object.find_all_posts()
             for post in posts:
-                print(f"Title: {post.title}, Category: {post.category} || {post.content}")
+                print(f"Title: {post.title}, Category: {post.category} || {post.content}\n")
         except Exception as exc:
             print("Error finding posts: ", exc)
     else :

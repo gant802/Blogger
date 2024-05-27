@@ -149,4 +149,6 @@ class Author:
 
     def find_all_posts(self):
         """Return a list of Post objects associated with this Author"""
-        return [post for post in Post.get_all() if post.author_id == self.id]
+        try:
+            return [post for post in Post.get_all() if post.author_id == self.id]
+        except: Exception("No posts found by author")
