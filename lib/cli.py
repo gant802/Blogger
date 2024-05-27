@@ -4,6 +4,8 @@ from helpers import (
     exit_program,
     add_author,
     write_post,
+    edit_author,
+    edit_post,
     view_authors,
     find_author_by_id,
     find_author_by_name,
@@ -23,6 +25,8 @@ def main():
             create_menu()
         elif choice == "2":
             view_menu()
+        elif choice == "3":
+            edit_menu()
         else:
             print("Invalid choice")
 
@@ -33,6 +37,7 @@ def menu():
     print("0. Exit the program")
     print("1. Create Author or Post")
     print("2. View Authors and Posts")
+    print("3. Edit Author or Post")
 
 def create_menu():
     while True:
@@ -90,6 +95,25 @@ def view_menu_options():
     print("6. View all posts by category")
     print("7. Return to main menu")
     
+def edit_menu():
+    while True:
+        edit_menu_options()
+        choice = input("> ")
+        if choice == "1":
+            edit_author()     
+        elif choice == "2":
+            edit_post()
+            
+        elif choice == "3":
+            main()
+
+def edit_menu_options():
+    print("Please select an option:")
+    print("1. Edit an author")
+    print("2. Edit a post")
+    print("3. Return to Menu")
+
+
 
 
 
