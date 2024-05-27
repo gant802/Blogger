@@ -1,4 +1,5 @@
 from models.__init__ import CURSOR, CONN
+from models.post import Post
 
 class Author:
     all = {}
@@ -146,3 +147,6 @@ class Author:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
+    def find_all_posts(self):
+        """Return a list of Post objects associated with this Author"""
+        return [post for post in Post.get_all() if post.author_id == self.id]
