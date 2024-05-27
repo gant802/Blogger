@@ -27,6 +27,8 @@ def main():
             view_menu()
         elif choice == "3":
             edit_menu()
+        elif choice == "4":
+            delete_menu()
         else:
             print("Invalid choice")
 
@@ -38,6 +40,7 @@ def menu():
     print("1. Create Author or Post")
     print("2. View Authors and Posts")
     print("3. Edit Author or Post")
+    print("4. Delete Author or Post")
 
 def create_menu():
     while True:
@@ -114,8 +117,25 @@ def edit_menu_options():
     print("3. Return to Menu")
 
 
+def delete_menu():
+    while True:
+        delete_menu_options()
+        choice = input("> ")
+        if choice == "1":
+            #delete_author()
+            pass
+        elif choice == "2":
+            #delete_post()
+            pass
+        elif choice == "3":
+            main()
 
 
+def delete_menu_options():
+    print("Please select an option:")
+    print("1. Delete an author")
+    print("2. Delete a post")
+    print("3. Return to Menu")
 
 
 

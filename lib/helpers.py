@@ -26,7 +26,7 @@ def write_post():
             author_id = input(f"Enter an author id from this list {author_ids} ")
         title = input("Enter a title: ")
     else:
-        print("no authors found. must add an author first.")
+        print("No authors found. Must add an author first.")
         create_menu()
 
     category = input(f"Enter a category from list of categories {Post.categories}: ")
