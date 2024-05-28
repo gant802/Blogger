@@ -17,7 +17,7 @@ from helpers import (
     delete_author
 )
 
-
+#? Main Menu
 def main():
     while True:
         menu()
@@ -35,7 +35,6 @@ def main():
         else:
             print("Invalid choice")
 
-
 def menu():
     print("Welcome to BLOGGER!")
     print("Please select an option:")
@@ -45,6 +44,8 @@ def menu():
     print("3. Edit Author or Post")
     print("4. Delete Author or Post")
 
+
+#? Create Menu
 def create_menu():
     while True:
         create_menu_options()
@@ -66,6 +67,8 @@ def create_menu_options():
     print("2. Write a post")
     print("3. Return to Main Menu")
 
+
+#? View Menu
 def view_menu():
     while True:
         view_menu_options()
@@ -103,7 +106,9 @@ def view_menu_options():
     print("6. View all posts by category")
     print("7. Find number of posts by author")
     print("8. Return to main menu")
-    
+
+
+#? Edit Menu
 def edit_menu():
     while True:
         edit_menu_options()
@@ -123,6 +128,7 @@ def edit_menu_options():
     print("3. Return to Menu")
 
 
+#? Delete Menu
 def delete_menu():
     while True:
         delete_menu_options()

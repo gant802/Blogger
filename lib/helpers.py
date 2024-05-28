@@ -21,7 +21,7 @@ def write_post():
     from cli import create_menu
     author_ids = [f"{object.id}: {object.name}" for object in Author.get_all()]
     if len(author_ids) > 0:
-        author_id = input(f"Enter an author id from this list {author_ids} ")
+        author_id = input(f"Enter an author id from this list {author_ids}: ")
         while author_id not in [str(object.id) for object in Author.get_all()]:
             print("name not in list")
             author_id = input(f"Enter an author id from this list {author_ids} ")
@@ -135,7 +135,7 @@ def edit_post():
     from cli import edit_menu
     all_posts = [f"{post.id}: {post.content}" for post in Post.get_all()]
     if len(all_posts) > 0:
-        post_id = input(f"Enter a post id from this list {all_posts}:")
+        post_id = input(f"Enter a post id from this list {all_posts}: ")
         while post_id not in [str(post.id) for post in Post.get_all()]:
             print("Post id is not in list")
             post_id = input(f"Enter a post id from this list {all_posts}")
@@ -162,7 +162,7 @@ def delete_post():
         print(f"\nPost -{title}- not found\n")
 
 def delete_author():
-    from cli import edit_menu
+    from cli import delete_menu
     author_ids = [f"{object.id}: {object.name}" for object in Author.get_all()]
     if len(author_ids) > 0:
         author_id = input(f"To remove an author, select an author id from this list {author_ids} ")
@@ -173,5 +173,5 @@ def delete_author():
         print(f"You deleted {selected_author.name}")
         selected_author.delete()
     else:
-        print("There are no posts to edit")
-        edit_menu
+        print("There are no authors to delete")
+        delete_menu()

@@ -44,6 +44,7 @@ class Author:
         CURSOR.execute(sql)
         CONN.commit()
     
+    #? Saves  an author to the database
     def save(self):
         """ Insert a new row with the the name of the author object.
         Update object id attribute using the primary key value of new row.
@@ -59,6 +60,7 @@ class Author:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
+    #? Creates and saves author to the database
     @classmethod
     def create(cls, name):
         """ Initialize a new Author instance and save the object to the database """
@@ -66,6 +68,7 @@ class Author:
         author.save()
         return author
     
+    #? Updates author and saves to database
     def update(self):
         """Update the table row corresponding to the current Author instance."""
         sql = """
@@ -76,6 +79,7 @@ class Author:
         CURSOR.execute(sql, (self.name, self.id))
         CONN.commit()
 
+    #? Deltes author from database
     def delete(self):
         """Delete the table row corresponding to the current Author instance,
         delete the author entry, and reassign id attribute"""
@@ -95,6 +99,7 @@ class Author:
         self.id = None
     
 
+    #? Checks to see if an author exists in database
     @classmethod
     def instance_from_db(cls, row):
         """Return an Author object having the attribute values from the table row."""
@@ -111,6 +116,7 @@ class Author:
             cls.all[author.id] = author
         return author
 
+    #? Returns list of all authors from database
     @classmethod 
     def get_all(cls):
         """Return a list containing an Author object per row in the table"""
@@ -123,6 +129,7 @@ class Author:
 
         return [cls.instance_from_db(row) for row in rows]
     
+    #? Finds an author from database by their id
     @classmethod 
     def find_by_id(cls, id):
         """Return a Author object corresponding to the table row matching the specified primary key"""
@@ -135,6 +142,7 @@ class Author:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    #? Finds author from database by their name
     @classmethod
     def find_by_name(cls, name):
         """Return an Author object corresponding to first table row matching specified name"""
@@ -147,6 +155,7 @@ class Author:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
+    #? Finds all posts of author instance from database
     def find_all_posts(self):
         """Return a list of Post objects associated with this Author"""
         try:
