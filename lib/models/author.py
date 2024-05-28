@@ -4,12 +4,13 @@ from models.post import Post
 class Author:
     all = {}
 
-    def __init__ (self, name, id=None):
+    def __init__ (self, name, favorite_category, id=None):
         self.name = name
+        self.favorite_category = favorite_category
         self.id = id
 
     def __repr__(self):
-        return f'<Author name={self.name}'
+        return f'<Author name={self.name} favorite_category={self.favorite_category}>'
     
 
     @property
@@ -22,6 +23,17 @@ class Author:
         if isinstance(new_name, str) and 0 < len(new_name) <= 15:
             self._name = new_name
 
+    @property
+    def favorite_category(self):
+        return self._favorite_category
+    
+    @favorite_category.setter
+    def favorite_category(self, new_category):
+        if new_category in Post.categories:
+            self._favorite_category = new_category
+        else:
+            raise ValueError("Category must be a valid category")
+
     #? Creates author table if it doesn't already exist
     @classmethod
     def create_table(cls):
@@ -29,7 +41,8 @@ class Author:
         sql = """
             CREATE TABLE IF NOT EXISTS authors (
             id INTEGER PRIMARY KEY,
-            name TEXT
+            name TEXT,
+            favorite_category TEXT
             )
         """
         CURSOR.execute(sql)
@@ -50,11 +63,11 @@ class Author:
         Update object id attribute using the primary key value of new row.
         Save the object in local dictionary using table row's PK as dictionary key"""
         sql = """
-                INSERT INTO authors (name)
-                VALUES (?)
+                INSERT INTO authors (name, favorite_category)
+                VALUES (?, ?)
         """
 
-        CURSOR.execute(sql, (self.name,))
+        CURSOR.execute(sql, (self.name, self.favorite_category))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -62,9 +75,9 @@ class Author:
 
     #? Creates and saves author to the database
     @classmethod
-    def create(cls, name):
+    def create(cls, name, favorite_category):
         """ Initialize a new Author instance and save the object to the database """
-        author = cls(name)
+        author = cls(name, favorite_category)
         author.save()
         return author
     
@@ -73,10 +86,10 @@ class Author:
         """Update the table row corresponding to the current Author instance."""
         sql = """
             UPDATE authors
-            SET name = ?
+            SET name = ?, favorite_category = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.id))
+        CURSOR.execute(sql, (self.name, self.favorite_category, self.id))
         CONN.commit()
 
     #? Deltes author from database
@@ -109,9 +122,10 @@ class Author:
         if author:
             # ensure attributes match row values in case local instance was modified
             author.name = row[1]
+            author.favorite_category = row[2]
         else:
             # not in dictionary, create new instance and add to dictionary
-            author = cls(row[1])
+            author = cls(row[1], row[2])
             author.id = row[0]
             cls.all[author.id] = author
         return author
