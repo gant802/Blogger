@@ -76,6 +76,7 @@ def find_author_by_name():
     print(f"\nAuthor found: --{author.name}--\n") if author else print(
         f'\nAuthor {name} not found\n')
 
+#bug when author is deleted
 def view_authors_posts():
     author_name = input("Enter the author's name: ")
     author_object = Author.find_by_name(author_name)
@@ -90,6 +91,7 @@ def view_authors_posts():
         print(f"\nAuthor named {author_name} not found\n")
         view_authors_posts()
 
+#bug when author is deleted
 def view_all_posts():
     posts = Post.get_all()
     if posts:
@@ -150,10 +152,26 @@ def edit_post():
 
 #? Delete features
 def delete_post():
-    title = input("Enter the post's title: ")
+    post_titles = [post.title for post in Post.get_all()]
+    title = input(f"Enter the post's title from this list {post_titles}: ")
     post = Post.find_by_title(title)
     if post:
         post.delete()
         print(f"\nPost -{title}- has been deleted\n")
     else :
         print(f"\nPost -{title}- not found\n")
+
+def delete_author():
+    from cli import edit_menu
+    author_ids = [f"{object.id}: {object.name}" for object in Author.get_all()]
+    if len(author_ids) > 0:
+        author_id = input(f"To remove an author, select an author id from this list {author_ids} ")
+        while author_id not in [str(object.id) for object in Author.get_all()]:
+            print("Author id is not in list")
+            author_id = input(f"To remove an author, select an author id from this list {author_ids} ")
+        selected_author = Author.find_by_id(author_id)
+        print(f"You deleted {selected_author.name}")
+        selected_author.delete()
+    else:
+        print("There are no posts to edit")
+        edit_menu

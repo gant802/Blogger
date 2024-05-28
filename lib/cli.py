@@ -13,7 +13,8 @@ from helpers import (
     view_all_posts,
     view_posts_by_category,
     find_number_of_posts_by_author,
-    delete_post
+    delete_post,
+    delete_author
 )
 
 
@@ -127,11 +128,9 @@ def delete_menu():
         delete_menu_options()
         choice = input("> ")
         if choice == "1":
-            #delete_author()
-            pass
+            delete_author()
         elif choice == "2":
             delete_post()
-            pass
         elif choice == "3":
             main()
 
