@@ -170,8 +170,15 @@ def delete_author():
             print("Author id is not in list")
             author_id = input(f"To remove an author, select an author id from this list {author_ids} ")
         selected_author = Author.find_by_id(author_id)
-        print(f"You deleted {selected_author.name}")
+        print(f"You deleted {selected_author.name} and all their posts")
+        author_posts = [post for post in Post.get_all()]
+        for post in author_posts:
+            if str(post.author_id) == author_id:
+                post.delete()
+            else:
+                continue
         selected_author.delete()
+        
     else:
         print("There are no authors to delete")
         delete_menu()
