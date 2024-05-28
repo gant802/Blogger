@@ -12,7 +12,8 @@ from helpers import (
     view_authors_posts,
     view_all_posts,
     view_posts_by_category,
-    find_number_of_posts_by_author
+    find_number_of_posts_by_author,
+    delete_post
 )
 
 
@@ -129,7 +130,7 @@ def delete_menu():
             #delete_author()
             pass
         elif choice == "2":
-            #delete_post()
+            delete_post()
             pass
         elif choice == "3":
             main()

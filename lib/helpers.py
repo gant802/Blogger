@@ -8,6 +8,7 @@ from models.post import Post
 #    print("Performing useful function#1.")
 
 
+#? Adding features
 def exit_program():
     print("Goodbye!")
     exit()
@@ -39,14 +40,14 @@ def write_post():
     
 
     
-
+#? Viewing features
 def view_authors():
     authors = Author.get_all()
     if authors:
         for author in authors:
-            print(f"{author.name} id:{author.id}")
+            print(f"\n{author.name} id:{author.id}")
     else :
-        print("No authors found")
+        print("\nNo authors found\n")
 
 def find_number_of_posts_by_author():
     authors = [f"{author.id}: {author.name}" for author in Author.get_all()]
@@ -54,9 +55,9 @@ def find_number_of_posts_by_author():
     try:
         author = Author.find_by_id(id_)
         authors_posts = author.find_all_posts()
-        print(f"Author {author.name} has {len(authors_posts)} posts.")
+        print(f"\nAuthor {author.name} has {len(authors_posts)} posts.\n")
     except Exception as exc:
-        print(f"Author not found. {exc}")
+        print(f"\nAuthor not found. {exc}\n")
         find_number_of_posts_by_author()
             
 
@@ -64,7 +65,7 @@ def find_author_by_id():
     id_ = input("Enter the author's id: ")
     author = Author.find_by_id(id_)
     if author:
-        print(f"\nAuthor found: --{author.name}--\n") if author else print(f'Author {id_} not found')
+        print(f"\nAuthor found: --{author.name}--\n") if author else print(f'\nAuthor {id_} not found\n')
     else: 
         print(f"\nAuthor {id_} not found\n")
         find_author_by_id()
@@ -72,8 +73,8 @@ def find_author_by_id():
 def find_author_by_name():
     name = input("Enter the author's name: ")
     author = Author.find_by_name(name)
-    print(f"Author found: --{author.name}--") if author else print(
-        f'Author {name} not found')
+    print(f"\nAuthor found: --{author.name}--\n") if author else print(
+        f'\nAuthor {name} not found\n')
 
 def view_authors_posts():
     author_name = input("Enter the author's name: ")
@@ -82,22 +83,21 @@ def view_authors_posts():
         try:
             posts = author_object.find_all_posts()
             for post in posts:
-                print(f"Title: {post.title}, Category: {post.category} || {post.content}\n")
+                print(f"\nTitle: {post.title}, Category: {post.category} || {post.content}\n")
         except Exception as exc:
             print("Error finding posts: ", exc)
     else :
-        print(f"Author named {author_name} not found")
-
-
+        print(f"\nAuthor named {author_name} not found\n")
+        view_authors_posts()
 
 def view_all_posts():
     posts = Post.get_all()
     if posts:
         for post in posts:
             author = Author.find_by_id(post.author_id)
-            print(f"Title: {post.title}, Category: {post.category}, Author: {author.name}|| {post.content}\n\n")
+            print(f"\nTitle: {post.title}, Category: {post.category}, Author: {author.name}|| {post.content}\n")
     else :
-        print("No posts found")
+        print("\nNo posts found\n")
 
 def view_posts_by_category():
     category = input("Enter the category: ")
@@ -105,10 +105,13 @@ def view_posts_by_category():
     if posts:
         for post in posts:
             author = Author.find_by_id(post.author_id)
-            print(f"Title: {post.title}, Author: {author.name}|| {post.content}\n\n")
+            print(f"\nTitle: {post.title}, Author: {author.name}|| {post.content}\n")
+    else :
+        print(f"\n{category} is not a valid category\n")
+        view_posts_by_category()
 
 
-
+#? Edit features
 def edit_author():
     from cli import edit_menu
     author_ids = [f"{object.id}: {object.name}" for object in Author.get_all()]
@@ -143,3 +146,14 @@ def edit_post():
     else:
         print("There are no posts to edit")
         edit_menu
+
+
+#? Delete features
+def delete_post():
+    title = input("Enter the post's title: ")
+    post = Post.find_by_title(title)
+    if post:
+        post.delete()
+        print(f"\nPost -{title}- has been deleted\n")
+    else :
+        print(f"\nPost -{title}- not found\n")
