@@ -8,14 +8,20 @@ from models.post import Post
 #    print("Performing useful function#1.")
 
 
-#? Adding features
+
 def exit_program():
-    print("Goodbye!")
+    print("\nBlogger says Goodbye!\n")
     exit()
 
+#? Adding features
 def add_author():
-    author = input("Author name: ")
-    Author.create(author)
+    try:
+        author = input("Author name: ")
+        favorite_category = input(f"Choose favorite category from list of categories {Post.categories}: ")
+        Author.create(author, favorite_category)
+        print(f"\nAuthor {author} added successfully.")
+    except Exception as exc:
+        print(f"\nError: {exc}")
 
 def write_post():
     from cli import create_menu
@@ -27,7 +33,7 @@ def write_post():
             author_id = input(f"Enter an author id from this list {author_ids} ")
         title = input("Enter a title: ")
     else:
-        print("No authors found. Must add an author first.")
+        print("\nNo authors found. Must add an author first.")
         create_menu()
 
     category = input(f"Enter a category from list of categories {Post.categories}: ")
@@ -36,7 +42,7 @@ def write_post():
         category = input(f"Enter a category from list of categories {Post.categories}: ")
     content = input("Post content: ")
     Post.create(title, content, category, author_id)
-    print("Post created successfully!")
+    print("\nPost created successfully!")
     
 
     
@@ -45,9 +51,9 @@ def view_authors():
     authors = Author.get_all()
     if authors:
         for author in authors:
-            print(f"\n{author.name} id:{author.id}")
+            print(f"\n-{author.name}- Favorite Category: {author.favorite_category} id: {author.id}")
     else :
-        print("\nNo authors found\n")
+        print("\nNo authors found")
 
 def find_number_of_posts_by_author():
     authors = [f"{author.id}: {author.name}" for author in Author.get_all()]
@@ -55,67 +61,67 @@ def find_number_of_posts_by_author():
     try:
         author = Author.find_by_id(id_)
         authors_posts = author.find_all_posts()
-        print(f"\nAuthor {author.name} has {len(authors_posts)} posts.\n")
+        post_plural = "post" if len(authors_posts) == 1 else "posts"
+        print(f"\nAuthor {author.name} has {len(authors_posts)} {post_plural}.")
     except Exception as exc:
-        print(f"\nAuthor not found. {exc}\n")
-        find_number_of_posts_by_author()
+        print(f"\nAuthor not found. {exc}")
+        
             
-
 def find_author_by_id():
     id_ = input("Enter the author's id: ")
     author = Author.find_by_id(id_)
     if author:
-        print(f"\nAuthor found: --{author.name}--\n") if author else print(f'\nAuthor {id_} not found\n')
+        print(f"\nAuthor Found: -{author.name}- Favorite Category: {author.favorite_category} id: {author.id}")
     else: 
-        print(f"\nAuthor {id_} not found\n")
-        find_author_by_id()
+        print(f"\nAuthor {id_} not found")
+        
 
 def find_author_by_name():
     name = input("Enter the author's name: ")
     author = Author.find_by_name(name)
-    print(f"\nAuthor found: --{author.name}--\n") if author else print(
-        f'\nAuthor {name} not found\n')
+    if author:
+        print(f"\nAuthor Found: -{author.name}- Favorite Category: {author.favorite_category} id: {author.id}") 
+    else:
+        print(f'\nAuthor {name} not found')
 
-#bug when author is deleted
 def view_authors_posts():
     author_name = input("Enter the author's name: ")
     author_object = Author.find_by_name(author_name)
     if author_object:
+        posts = author_object.find_all_posts()
+        if not posts: print(f"\nAuthor {author_object.name} has no posts yet")
         try:
-            posts = author_object.find_all_posts()
             for post in posts:
-                print(f"\nTitle: {post.title}, Category: {post.category} || {post.content}\n")
+                print(f"\nTitle: {post.title} || Category: {post.category} || {post.content}")
         except Exception as exc:
             print("Error finding posts: ", exc)
     else :
-        print(f"\nAuthor named {author_name} not found\n")
-        view_authors_posts()
+        print(f"\nAuthor named {author_name} not found")
+    
 
-#bug when author is deleted
 def view_all_posts():
     posts = Post.get_all()
     if posts:
         for post in posts:
             author = Author.find_by_id(post.author_id)
-            print(f"\nTitle: {post.title}, Category: {post.category}, Author: {author.name}|| {post.content}\n")
+            print(f"\nTitle: {post.title} || Category: {post.category} || Author: {author.name} || {post.content}")
     else :
-        print("\nNo posts found\n")
+        print("\nNo posts found")
 
 def view_posts_by_category():
-    category = input("Enter the category: ")
+    category = input(f"Enter a category from the list {Post.categories}: ")
     posts = Post.find_by_category(category)
     if posts:
         for post in posts:
             author = Author.find_by_id(post.author_id)
-            print(f"\nTitle: {post.title}, Author: {author.name}|| {post.content}\n")
+            print(f"\nTitle: {post.title} || Author: {author.name} || {post.content}")
     else :
-        print(f"\n{category} is not a valid category\n")
-        view_posts_by_category()
+        print(f"\nCategory {category} has no posts")
+        
 
 
 #? Edit features
 def edit_author():
-    from cli import edit_menu
     author_ids = [f"{object.id}: {object.name}" for object in Author.get_all()]
     if len(author_ids) > 0:
         author_id = input(f"Enter an author id from this list {author_ids} ")
@@ -126,13 +132,11 @@ def edit_author():
         new_name = input("Enter a new name: ")
         selected_author.name = new_name
         selected_author.update()
-        print(f"Author's new name is {selected_author.name}")
+        print(f"\nAuthor's new name is {selected_author.name}")
     else:
-        print("There are no authors to edit")
-        edit_menu()
+        print("\nThere are no authors to edit")
 
 def edit_post():
-    from cli import edit_menu
     all_posts = [f"{post.id}: {post.content}" for post in Post.get_all()]
     if len(all_posts) > 0:
         post_id = input(f"Enter a post id from this list {all_posts}: ")
@@ -142,12 +146,12 @@ def edit_post():
         selected_post = Post.find_by_id(post_id)
         new_content = input("Enter new content: ")
         selected_post.content = new_content
+        author_name = Author.find_by_id(selected_post.author_id)
         selected_post.update()
-        print(f"New post: {new_content}")
-
+        print(f"\nUpdated {selected_post.title} by {author_name.name}: {new_content}")
     else:
-        print("There are no posts to edit")
-        edit_menu
+        print("\nThere are no posts to edit")
+        
 
 
 #? Delete features
@@ -157,20 +161,19 @@ def delete_post():
     post = Post.find_by_title(title)
     if post:
         post.delete()
-        print(f"\nPost -{title}- has been deleted\n")
+        print(f"\nPost -{title}- has been deleted")
     else :
-        print(f"\nPost -{title}- not found\n")
+        print(f"\nPost -{title}- not found")
 
 def delete_author():
-    from cli import delete_menu
     author_ids = [f"{object.id}: {object.name}" for object in Author.get_all()]
     if len(author_ids) > 0:
-        author_id = input(f"To remove an author, select an author id from this list {author_ids} ")
+        author_id = input(f"To remove an author, select an author id from this list {author_ids}: ")
         while author_id not in [str(object.id) for object in Author.get_all()]:
             print("Author id is not in list")
-            author_id = input(f"To remove an author, select an author id from this list {author_ids} ")
+            author_id = input(f"To remove an author, select an author id from this list {author_ids}: ")
         selected_author = Author.find_by_id(author_id)
-        print(f"You deleted {selected_author.name} and all their posts")
+        print(f"\nYou deleted {selected_author.name} and all their posts")
         author_posts = [post for post in Post.get_all()]
         for post in author_posts:
             if str(post.author_id) == author_id:
@@ -178,7 +181,6 @@ def delete_author():
             else:
                 continue
         selected_author.delete()
-        
     else:
-        print("There are no authors to delete")
-        delete_menu()
+        print("\nThere are no authors to delete")
+

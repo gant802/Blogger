@@ -33,10 +33,10 @@ def main():
         elif choice == "4":
             delete_menu()
         else:
-            print("Invalid choice")
+            print("\nInvalid choice")
 
 def menu():
-    print("Welcome to BLOGGER!")
+    print("\nWelcome to BLOGGER!")
     print("Please select an option:")
     print("0. Exit the program")
     print("1. Create Author or Post")
@@ -50,22 +50,27 @@ def create_menu():
     while True:
         create_menu_options()
         choice = input("> ")
-        if choice == "1":
+        if choice == "0":
+            exit_program()
+        elif choice == "1":
+            main()
+        elif choice == "2":
             add_author()
             create_menu()
-        elif choice == "2":
+        elif choice == "3":
             write_post()
             create_menu()
-        elif choice == "3":
-            main()
         else:
             print("Invalid choice")
 
 def create_menu_options():
+    print("\n-Now in Create Menu-")
     print("Please select an option:")
-    print("1. Add an author")
-    print("2. Write a post")
-    print("3. Return to Main Menu")
+    print("0. Exit Program")
+    print("1. Return to Main Menu")
+    print("2. Add a New Author")
+    print("3. Write a Post")
+    
 
 
 #? View Menu
@@ -76,36 +81,38 @@ def view_menu():
         if choice == "0":
             exit_program()
         elif choice == "1":
-            view_authors()
-        elif choice == "2":
-            find_author_by_id()
-        elif choice == "3":
-            find_author_by_name()
-        elif choice == "4":
-            view_authors_posts()
-        elif choice == "5":
-            view_all_posts()
-        elif choice == "6":
-            view_posts_by_category()
-        elif choice == "7":
-            find_number_of_posts_by_author()
-        elif choice == "8":
             main()
+        elif choice == "2":
+            view_authors()
+        elif choice == "3":
+            find_author_by_id()
+        elif choice == "4":
+            find_author_by_name()
+        elif choice == "5":
+            view_authors_posts()
+        elif choice == "6":
+            view_all_posts()
+        elif choice == "7":
+            view_posts_by_category()
+        elif choice == "8":
+            find_number_of_posts_by_author()
         else:
             print("Invalid choice")
         view_menu()
 
 def view_menu_options():
+    print("\n-Now in Viewing Menu-")
     print("Please select an option:")
     print("0. Exit Program")
-    print("1. View all authors")
-    print("2. Find author by id")
-    print("3. Find author by name")
-    print("4. View all post by specific author")
-    print("5. View all posts")
-    print("6. View all posts by category")
-    print("7. Find number of posts by author")
-    print("8. Return to main menu")
+    print("1. Return to Main Menu")
+    print("2. View all authors")
+    print("3. Find author by id")
+    print("4. Find author by name")
+    print("5. View all post by specific author")
+    print("6. View all posts")
+    print("7. View all posts by category")
+    print("8. Find number of posts by author")
+    
 
 
 #? Edit Menu
@@ -113,19 +120,25 @@ def edit_menu():
     while True:
         edit_menu_options()
         choice = input("> ")
-        if choice == "1":
-            edit_author()     
-        elif choice == "2":
-            edit_post()
-            
-        elif choice == "3":
+        if choice == "0":
+            exit_program()
+        elif choice == "1":
             main()
+        elif choice == "2":
+            edit_author()     
+        elif choice == "3":
+            edit_post()
+        else :
+            print("Invalid choice")
 
 def edit_menu_options():
+    print("\n-Now in Edit Menu-")
     print("Please select an option:")
-    print("1. Edit an author")
-    print("2. Edit a post")
-    print("3. Return to Menu")
+    print("0. Exit Program")
+    print("1. Return to Main Menu")
+    print("2. Edit an author")
+    print("3. Edit a post")
+    
 
 
 #? Delete Menu
@@ -133,19 +146,26 @@ def delete_menu():
     while True:
         delete_menu_options()
         choice = input("> ")
-        if choice == "1":
-            delete_author()
+        if choice == "0":
+            exit_program()
+        elif choice == "1":
+            main()    
         elif choice == "2":
-            delete_post()
+            delete_author()
         elif choice == "3":
-            main()
+            delete_post()
+        else :
+            print("Invalid choice")
 
 
 def delete_menu_options():
+    print("\n-Now in Delete Menu-")
     print("Please select an option:")
-    print("1. Delete an author")
-    print("2. Delete a post")
-    print("3. Return to Menu")
+    print("0. Exit Program")
+    print("1. Return to Main Menu")
+    print("2. Delete an author")
+    print("3. Delete a post")
+    
 
 
 
