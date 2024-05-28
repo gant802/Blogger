@@ -4,7 +4,6 @@ class Post():
     all = {}
     categories = ['sports', 'news', 'pop', 'nature', 'weather', 'cars', 'movies']
 
-    #! Need to create a validation for author id to be an instance of an author using Author.find_by_id()
 
     def __init__(self, title, content, category, author_id, id = None):
         self.id = id
