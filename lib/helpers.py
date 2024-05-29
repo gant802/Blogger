@@ -18,6 +18,9 @@ def add_author():
     try:
         author = input("Author name: ")
         favorite_category = input(f"Choose favorite category from list of categories {Post.categories}: ")
+        while favorite_category not in Post.categories:
+            print("Invalid Category")
+            favorite_category = input(f"Choose favorite category from list of categories {Post.categories}: ")
         Author.create(author, favorite_category)
         print(f"\nAuthor {author} added successfully.")
     except Exception as exc:
@@ -85,8 +88,8 @@ def find_author_by_name():
         print(f'\nAuthor {name} not found')
 
 def view_authors_posts():
-    author_name = input("Enter the author's name: ")
-    author_object = Author.find_by_name(author_name)
+    author_id = input("Enter the author's id: ")
+    author_object = Author.find_by_id(author_id)
     if author_object:
         posts = author_object.find_all_posts()
         if not posts: print(f"\nAuthor {author_object.name} has no posts yet")
@@ -96,7 +99,7 @@ def view_authors_posts():
         except Exception as exc:
             print("Error finding posts: ", exc)
     else :
-        print(f"\nAuthor named {author_name} not found")
+        print(f"\nAuthor id of {author_id} not found")
     
 
 def view_all_posts():
